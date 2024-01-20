@@ -54,6 +54,12 @@ function displayExercise(consigne, exos, resultats, exemple) {
     checkAnswersBtn.removeEventListener('click', checkAnswers);
     checkAnswersBtn.removeEventListener('click', checkDivisionAnswers);
 
-    checkAnswersBtn.addEventListener('click', () => checkAnswers(nomExo, resultats));
+    // Add the appropriate event listener based on the type of exercise
+    if (nomExo === 'divisions') { // If it's a division exercise
+        checkAnswersBtn.addEventListener('click', () => checkDivisionAnswers(resultats));
+    } else {
+        checkAnswersBtn.addEventListener('click', () => checkAnswers(resultats));
+    }
+    
 }
 

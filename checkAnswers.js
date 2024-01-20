@@ -1,4 +1,3 @@
-
 function checkAnswers(resultats) {
     let correctAnswers = 0;
     document.querySelectorAll('.answer').forEach((inputElem, index) => {
@@ -23,7 +22,7 @@ function checkAnswers(resultats) {
     const resultDiv = document.getElementById('result');
     if (correctAnswers === resultats.length) {
         resultDiv.textContent = `Tout est correct ! Voici de nouveaux exercices.`;
-        tryLoad = false;
+        savedIndex = -1;
         generateAndDisplayExercise(); // Generate new exercises if all answers are correct
     } else {
         resultDiv.textContent = `Tu as trouvé ${correctAnswers} bonnes réponses sur ${resultats.length * 2} ! Réessaye.`;
@@ -72,7 +71,7 @@ function checkDivisionAnswers(resultats) {
 
     if (correctAnswers === resultats.length * 2) { // Multiplying by 2 because each question has 2 answers
         resultDiv.textContent = `Tout est correct ! Voici de nouveaux exercices.`;
-        tryLoad = false;
+        savedIndex = -1;
         generateAndDisplayExercise(); // Generate new exercises if all answers are correct
     } else {
         resultDiv.textContent = `Tu as trouvé ${correctAnswers} bonnes réponses sur ${resultats.length * 2} ! Réessaye.`;
