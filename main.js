@@ -1,24 +1,15 @@
 const exercicesListe = [multiplications, tablesDeMultiplication, divisions, simplificationDecomposition, soustractions];
 let numExo, nomExo;
-let savedIndex, consigneSave, exosSave, resultatsSave, exempleSave;
+let tryLoad;
 
 document.addEventListener('DOMContentLoaded', () => {
-
-    savedIndex = parseInt(localStorage.getItem('savedIndex'));
-    if (savedIndex === null) {
-        savedIndex = -1;
-    }
-    consigneSave = JSON.parse(localStorage.getItem('consigneSave'));
-    exosSave = JSON.parse(localStorage.getItem('exosSave'));
-    resultatsSave = JSON.parse(localStorage.getItem('resultatsSave'));
-    exempleSave = JSON.parse(localStorage.getItem('exempleSave'));
-
+    tryLoad = isExoSaved();
     generateAndDisplayExercise();
 });
 
 document.getElementById('secretButton').addEventListener('click', () => {
     numExo = (numExo + 1) % (exercicesListe.length);
-    savedIndex = -1;
+    tryLoad = false;
     if (isNaN(numExo)) {
         numExo = getRandomInt(0, exercicesListe.length);
     }
@@ -28,12 +19,9 @@ document.getElementById('secretButton').addEventListener('click', () => {
 function generateAndDisplayExercise(exerciseIndex = -1) {
     let exercice;
     let consigne, exos, resultats, exemple;
-    if (savedIndex !== -1) {
-        numExo = savedIndex;
-        consigne = consigneSave;
-        exos = exosSave;
-        resultats = resultatsSave;
-        exemple = exempleSave;
+
+    if (tryLoad && isExoSaved()) {
+        ({ numExo, consigne, exos, resultats, exemple } = loadExercise())
         exercice = exercicesListe[numExo];
     } else {
         if (exerciseIndex !== -1) {
@@ -45,19 +33,8 @@ function generateAndDisplayExercise(exerciseIndex = -1) {
             exercice = exercicesListe[numExo];
             ({ consigne, exos, resultats, exemple } = exercice())
         }
-
         // Save the generated values
-        savedIndex = numExo;
-        consigneSave = consigne;
-        exosSave = exos;
-        resultatsSave = resultats;
-        exempleSave = exemple;
-
-        localStorage.setItem('savedIndex', savedIndex);
-        localStorage.setItem('consigneSave', JSON.stringify(consigneSave));
-        localStorage.setItem('exosSave', JSON.stringify(exosSave));
-        localStorage.setItem('resultatsSave', JSON.stringify(resultatsSave));
-        localStorage.setItem('exempleSave', JSON.stringify(exempleSave));
+        tryLoad = saveExercise(numExo, consigne, exos, resultats, exemple);
     }
 
     nomExo = exercice.name;
@@ -67,98 +44,9 @@ function generateAndDisplayExercise(exerciseIndex = -1) {
 
 function displayExercise(consigne, exos, resultats, exemple) {
 
-    const exercisesContainer = document.getElementById('exercises');
-    exercisesContainer.innerHTML = ''; // Clear previous exercises
-
-    const examples = document.getElementById('examples');
-    examples.innerHTML = ''; // Clear previous example
-
-    if (nomExo === 'divisions' || nomExo == 'simplificationDecomposition') {
-        examples.style.display = 'block';
-    } else {
-        examples.style.display = 'none';
-    }
-
-    // Exercise's instruction
-    document.getElementById('instruction').textContent = consigne[0];
-
-    // Exercise's questions and answer boxes
-    if (nomExo === 'divisions') { // Division exercises
-        const divisionExercises = document.getElementById('exercises');
-
-        exos.forEach((exoPair, index) => {
-            const exerciseElem = document.createElement('div');
-            exerciseElem.className = 'exercise division-exercise';
-
-            const questionContainer = document.createElement('div');
-            questionContainer.className = 'question-container';
-
-            const answerContainer = document.createElement('div');
-            answerContainer.className = 'answer-container';
-
-            // Create separate elements for each part of the consigne
-            const label1 = document.createElement('label');
-            label1.textContent = exoPair[0];
-            label1.className = 'consigne-part'; // Add a class for styling if needed
-
-            const label2 = document.createElement('label');
-            label2.textContent = exoPair[1];
-            label2.className = 'consigne-part'; // Add a class for styling if needed
-
-            const inputQuotient = document.createElement('input');
-            inputQuotient.type = 'number';
-            inputQuotient.placeholder = 'q';
-            inputQuotient.className = 'answer';
-
-            const inputRemainder = document.createElement('input');
-            inputRemainder.type = 'number';
-            inputRemainder.placeholder = 'r';
-            inputRemainder.className = 'answer';
-
-            questionContainer.appendChild(label1);
-            questionContainer.appendChild(label2);
-
-            answerContainer.appendChild(inputQuotient);
-            answerContainer.appendChild(inputRemainder);
-
-            exerciseElem.appendChild(questionContainer);
-            exerciseElem.appendChild(answerContainer);
-            exercisesContainer.appendChild(exerciseElem);
-        });
-
-    } else {
-        exos.forEach((exo, index) => {
-            const exerciseElem = document.createElement('div');
-            exerciseElem.className = 'exercise regular-exercise'; // Added class for specific styling
-
-            const label = document.createElement('label');
-            label.textContent = exo;
-            label.className = 'consigne'; // Class for styling if needed
-
-            const input = document.createElement('input');
-            input.type = 'number';
-            input.className = 'answer';
-
-            exerciseElem.appendChild(label);
-            exerciseElem.appendChild(input);
-            exercisesContainer.appendChild(exerciseElem);
-
-        });
-
-    }
-
-    // exercise's example
-    if (nomExo === 'divisions' || nomExo === 'simplificationDecomposition') {
-        const exampleTitle = document.createElement('h3');
-        exampleTitle.textContent = 'Exemple :';
-        examples.appendChild(exampleTitle);
-
-        exemple.forEach((ex) => {
-            const exampleParagraph = document.createElement('p');
-            exampleParagraph.textContent = ex;
-            examples.appendChild(exampleParagraph);
-        });
-    }
+    displayConsigne(nomExo, consigne);
+    displayQuestions(nomExo, exos);
+    displayExample(nomExo, exemple);
 
     // Attach the correct answer checking function based on the exercise type
     const checkAnswersBtn = document.getElementById('checkAnswersBtn');
@@ -197,7 +85,7 @@ function checkAnswers(resultats) {
     const resultDiv = document.getElementById('result');
     if (correctAnswers === resultats.length) {
         resultDiv.textContent = `Tout est correct ! Voici de nouveaux exercices.`;
-        savedIndex = -1;
+        tryLoad = false;
         generateAndDisplayExercise(); // Generate new exercises if all answers are correct
     } else {
         resultDiv.textContent = `Tu as trouvé ${correctAnswers} bonnes réponses sur ${resultats.length * 2} ! Réessaye.`;
@@ -246,7 +134,7 @@ function checkDivisionAnswers(resultats) {
 
     if (correctAnswers === resultats.length * 2) { // Multiplying by 2 because each question has 2 answers
         resultDiv.textContent = `Tout est correct ! Voici de nouveaux exercices.`;
-        savedIndex = -1;
+        tryLoad = false;
         generateAndDisplayExercise(); // Generate new exercises if all answers are correct
     } else {
         resultDiv.textContent = `Tu as trouvé ${correctAnswers} bonnes réponses sur ${resultats.length * 2} ! Réessaye.`;
