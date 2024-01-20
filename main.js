@@ -45,20 +45,28 @@ function generateAndDisplayExercise(exerciseIndex = -1) {
 
 function displayExercise(consigne, exos, resultats, exemple) {
 
-    displayConsigne(nomExo, consigne);
-    displayQuestions(nomExo, exos);
-    displayExample(nomExo, exemple);
+    if (nomExo !== 'multiplications'){
+        displayConsigne(nomExo, consigne);
+        displayQuestions(nomExo, exos);
+        displayExample(nomExo, exemple);    
+    } else {
+        let exerciseInstructions = multiplications.exerciseInstructions;
+        let questions = multiplications.makeQuestions();
+        let questionInstructions = multiplications.generateQuestionInstructions(questions);
+        
+        multiplications.displayExercise(exerciseInstructions, questionInstructions);
+    }
 
     // Attach the correct answer checking function based on the exercise type
     const checkAnswersBtn = document.getElementById('checkAnswersBtn');
-    checkAnswersBtn.removeEventListener('click', checkAnswers);
+    checkAnswersBtn.removeEventListener('click', checkRegularAnswers);
     checkAnswersBtn.removeEventListener('click', checkDivisionAnswers);
 
     // Add the appropriate event listener based on the type of exercise
     if (nomExo === 'divisions') { // If it's a division exercise
         checkAnswersBtn.addEventListener('click', () => checkDivisionAnswers(resultats));
     } else {
-        checkAnswersBtn.addEventListener('click', () => checkAnswers(resultats));
+        checkAnswersBtn.addEventListener('click', () => checkRegularAnswers(resultats));
     }
     
 }

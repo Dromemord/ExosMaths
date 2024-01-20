@@ -1,4 +1,4 @@
-function multiplications(nbExos = 5, nbDigits1 = 4, nbDigits2 = 3) {
+/* function multiplications(nbExos = 5, nbDigits1 = 4, nbDigits2 = 3) {
 
     const consigne = ["Pose les multiplications suivantes :"];
     const exos = [];
@@ -17,6 +17,7 @@ function multiplications(nbExos = 5, nbDigits1 = 4, nbDigits2 = 3) {
 
     return { consigne, exos, resultats, exemple };
 }
+ */
 
 function tablesDeMultiplication(nbExos = 10, tables = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) {
 
