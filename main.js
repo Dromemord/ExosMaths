@@ -4,6 +4,7 @@ let tryLoad;
 
 document.addEventListener('DOMContentLoaded', () => {
     tryLoad = isExoSaved();
+    console.log(tryLoad);
     generateAndDisplayExercise();
 });
 

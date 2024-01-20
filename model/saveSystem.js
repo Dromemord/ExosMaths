@@ -29,5 +29,5 @@ function removeExercise() {
 }
 
 function isExoSaved() {
-    return parseInt(localStorage.getItem('numExo')) !== null;
+    return parseInt(localStorage.getItem('numExo')) !== null && ! isNaN(parseInt(localStorage.getItem('numExo')));
 }

@@ -1,13 +1,5 @@
 
-function checkAnswers(nomExo, resultats) {
-    if (nomExo === 'divisions') {
-        checkDivisionAnswers(resultats);
-    } else {
-        checkRegularAnswers(resultats);
-    }
-}
-
-function checkRegularAnswers(resultats) {
+function checkAnswers(resultats) {
     let correctAnswers = 0;
     document.querySelectorAll('.answer').forEach((inputElem, index) => {
         if (nomExo === 'simplificationDecomposition') {
