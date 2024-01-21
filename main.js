@@ -1,4 +1,4 @@
-const exercicesListe = [multiplications, tablesDeMultiplication, divisions, simplificationDecomposition, soustractions];
+const exerciseList = [substractions];
 let numExo, nomExo;
 let tryLoad;
 
@@ -9,17 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.getElementById('secretButton').addEventListener('click', () => {
-    numExo = (numExo + 1) % (exercicesListe.length);
+    numExo = (numExo + 1) % (exerciseList.length);
     tryLoad = false;
     if (isNaN(numExo)) {
-        numExo = getRandomInt(0, exercicesListe.length);
+        numExo = getRandomInt(0, exerciseList.length);
     }
     generateAndDisplayExercise(exerciseIndex = numExo);
 });
 
 function generateAndDisplayExercise(exerciseIndex = -1) {
-    let exercice;
-    let consigne, exos, resultats, exemple;
+    let exercise = exerciseList[0];
+/*     let consigne, exos, resultats, exemple;
 
     if (tryLoad && isExoSaved()) {
         ({ numExo, consigne, exos, resultats, exemple } = loadExercise())
@@ -36,38 +36,22 @@ function generateAndDisplayExercise(exerciseIndex = -1) {
         }
         // Save the generated values
         tryLoad = saveExercise(numExo, consigne, exos, resultats, exemple);
-    }
+    } */
 
-    nomExo = exercice.name;
+    nomExo = exercise.name;
 
-    displayExercise(consigne, exos, resultats, exemple);
+    displayExercise(exercise);
 }
 
-function displayExercise(consigne, exos, resultats, exemple) {
+function displayExercise(exercise) {
 
-    if (nomExo !== 'multiplications'){
-        displayConsigne(nomExo, consigne);
-        displayQuestions(nomExo, exos);
-        displayExample(nomExo, exemple);    
-    } else {
-        let exerciseInstructions = multiplications.exerciseInstructions;
-        let questions = multiplications.makeQuestions();
-        let questionInstructions = multiplications.generateQuestionInstructions(questions);
-        
-        multiplications.displayExercise(exerciseInstructions, questionInstructions);
-    }
+    let exerciseInstructions = exercise.exerciseInstructions;
+    let questions = exercise.makeQuestions();
+    let questionInstructions = exercise.generateQuestionInstructions(questions);
+    let questionResults = exercise.generateQuestionResults(questions);
 
-    // Attach the correct answer checking function based on the exercise type
-    const checkAnswersBtn = document.getElementById('checkAnswersBtn');
-    checkAnswersBtn.removeEventListener('click', checkRegularAnswers);
-    checkAnswersBtn.removeEventListener('click', checkDivisionAnswers);
-
-    // Add the appropriate event listener based on the type of exercise
-    if (nomExo === 'divisions') { // If it's a division exercise
-        checkAnswersBtn.addEventListener('click', () => checkDivisionAnswers(resultats));
-    } else {
-        checkAnswersBtn.addEventListener('click', () => checkRegularAnswers(resultats));
-    }
+    exercise.displayExercise(exerciseInstructions, questionInstructions);
     
+    exercise.displayVerifyButton(questionResults);    
 }
 
