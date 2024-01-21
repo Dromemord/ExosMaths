@@ -1,17 +1,18 @@
-const multiplications = {
-    name: 'multiplications',
-    exerciseInstructions: ["Pose les multiplications suivantes :"],
+const substractions = {
+    name: 'substractions',
+    exerciseInstructions: ["Effectue les soustractions suivantes :"],
 
-    makeQuestions: function (nbExos = 5, nbDigits1 = 4, nbDigits2 = 3) {
+    makeQuestions: function (nbExos = 5, nbDigits = 8) {
         let questions = [];
 
-        const nbDigits1Base = 10 ** (nbDigits1 - 1);
-        const nbDigits2Base = 10 ** (nbDigits2 - 1);
-
+        const nbIntDigits = Math.pow(10, nbDigits - 2);
+        const nbFracDigits = Math.pow(10, Math.floor(nbDigits / 2));
+    
         for (let i = 0; i < nbExos; i++) {
-            const vEx1 = getRandomInt(nbDigits1Base, 10 * nbDigits1Base);
-            const vEx2 = getRandomInt(nbDigits2Base, 10 * nbDigits2Base);
-            questions.push([vEx1, vEx2]);
+            const vEx1 = getRandomInt(10 * nbIntDigits, 100 * nbIntDigits);
+            const vEx2 = getRandomInt(nbIntDigits, vEx1 - 1);
+            
+            questions.push([vEx1/nbFracDigits, vEx2/nbFracDigits]);
         }
 
         return questions
@@ -21,7 +22,7 @@ const multiplications = {
         let questionInstructions = [];
 
         questions.forEach(question => {
-            questionInstructions.push(`${question[0]} x ${question[1]} = `);
+            questionInstructions.push(`${question[0]} - ${question[1]} = `);
         });
 
         return questionInstructions;

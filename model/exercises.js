@@ -25,7 +25,7 @@ function tablesDeMultiplication(nbExos = 10, tables = [0, 1, 2, 3, 4, 5, 6, 7, 8
     const exos = [];
     const resultats = [];
     const exemple = [];
-    
+
     const usedPairs = new Set();  // Set to keep track of used number pairs
 
     for (let i = 0; i < nbExos; i++) {

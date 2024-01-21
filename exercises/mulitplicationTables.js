@@ -1,16 +1,18 @@
-const multiplications = {
-    name: 'multiplications',
-    exerciseInstructions: ["Pose les multiplications suivantes :"],
+const multiplicationTables = {
+    name: 'multiplicationTables',
+    exerciseInstructions: ["De tête, résous les multiplications suivantes :"],
 
-    makeQuestions: function (nbExos = 5, nbDigits1 = 4, nbDigits2 = 3) {
+    makeQuestions: function (nbExos = 10, tables = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) {
         let questions = [];
 
-        const nbDigits1Base = 10 ** (nbDigits1 - 1);
-        const nbDigits2Base = 10 ** (nbDigits2 - 1);
+        const usedPairs = new Set();
 
         for (let i = 0; i < nbExos; i++) {
-            const vEx1 = getRandomInt(nbDigits1Base, 10 * nbDigits1Base);
-            const vEx2 = getRandomInt(nbDigits2Base, 10 * nbDigits2Base);
+            do {
+                vEx1 = tables[Math.floor(Math.random() * tables.length)];
+                vEx2 = tables[Math.floor(Math.random() * tables.length)];
+            } while (usedPairs.has([vEx1, vEx2]) || usedPairs.has([vEx2, vEx1]));
+            usedPairs.add([vEx1, vEx2]);
             questions.push([vEx1, vEx2]);
         }
 
