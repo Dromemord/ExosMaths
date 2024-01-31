@@ -8,27 +8,20 @@ const decompositions1 = new Decompositions1();
 
 const exerciseList = [euclidianDivisionExercise, multiplicationTablesExercise, multiplicationsExercise, substractionsExercise, multiplicationsDecimalNumbersExercise, decompositions1];
 let numExo, nomExo;
-let tryLoad;
 
 document.addEventListener('DOMContentLoaded', () => {
-    tryLoad = isExoSaved();
     generateAndDisplayExercise();
 });
 
 document.getElementById('secretButton').addEventListener('click', () => {
-    numExo = (numExo + 1) % (exerciseList.length);
-    tryLoad = false;
-    if (isNaN(numExo)) {
-        numExo = getRandomInt(0, exerciseList.length);
-    }
-    generateAndDisplayExercise(exerciseIndex = numExo);
+    generateAndDisplayExercise(0);
 });
 
 function generateAndDisplayExercise(exerciseIndex = -1) {
     if (exerciseIndex == -1) {
         numExo = 0;
     } else {
-        numExo += 1;
+        numExo = (numExo + 1) % (exerciseList.length);
     }
     let exercise = exerciseList[numExo];
     /*     let consigne, exos, resultats, exemple;
