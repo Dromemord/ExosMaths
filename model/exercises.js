@@ -25,7 +25,7 @@ function tablesDeMultiplication(nbExos = 10, tables = [0, 1, 2, 3, 4, 5, 6, 7, 8
     const exos = [];
     const resultats = [];
     const exemple = [];
-
+    
     const usedPairs = new Set();  // Set to keep track of used number pairs
 
     for (let i = 0; i < nbExos; i++) {
@@ -51,8 +51,8 @@ function divisions(nbExos = 5, nbDigits1 = 3, nbDigits2 = 2) {
     const exos = [];
     const resultats = [];
 
-    const nbDigits1Base = 10 ** (nbDigits1 - 1);
     const nbDigits2Base = 10 ** (nbDigits2 - 1);
+    const nbDigits1Base = 10 ** (nbDigits1 - 1);
 
     const vExemple1 = getRandomInt(nbDigits1Base, 10 * nbDigits1Base);
     const vExemple2 = getRandomInt(nbDigits2Base, 10 * nbDigits2Base);

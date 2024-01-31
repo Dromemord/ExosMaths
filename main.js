@@ -1,10 +1,17 @@
-const exerciseList = [substractions];
+const euclidianDivisionExercise = new EuclidianDivision();
+const multiplicationTablesExercise = new MultiplicationTables();
+const multiplicationsExercise = new Multiplications();
+const substractionsExercise = new Substractions();
+const multiplicationsDecimalNumbersExercise = new MultiplicationsDecimalNumbers();
+const decompositions1 = new Decompositions1();
+
+
+const exerciseList = [euclidianDivisionExercise, multiplicationTablesExercise, multiplicationsExercise, substractionsExercise, multiplicationsDecimalNumbersExercise, decompositions1];
 let numExo, nomExo;
 let tryLoad;
 
 document.addEventListener('DOMContentLoaded', () => {
     tryLoad = isExoSaved();
-    console.log(tryLoad);
     generateAndDisplayExercise();
 });
 
@@ -18,25 +25,30 @@ document.getElementById('secretButton').addEventListener('click', () => {
 });
 
 function generateAndDisplayExercise(exerciseIndex = -1) {
-    let exercise = exerciseList[0];
-/*     let consigne, exos, resultats, exemple;
-
-    if (tryLoad && isExoSaved()) {
-        ({ numExo, consigne, exos, resultats, exemple } = loadExercise())
-        exercice = exercicesListe[numExo];
+    if (exerciseIndex == -1) {
+        numExo = 0;
     } else {
-        if (exerciseIndex !== -1) {
-            numExo = exerciseIndex; // Use the passed exerciseIndex if it's not -1
+        numExo += 1;
+    }
+    let exercise = exerciseList[numExo];
+    /*     let consigne, exos, resultats, exemple;
+    
+        if (tryLoad && isExoSaved()) {
+            ({ numExo, consigne, exos, resultats, exemple } = loadExercise())
             exercice = exercicesListe[numExo];
-            ({ consigne, exos, resultats, exemple } = exercice())
         } else {
-            numExo = getRandomInt(0, exercicesListe.length); // Assign a random exercise if -1 is passed
-            exercice = exercicesListe[numExo];
-            ({ consigne, exos, resultats, exemple } = exercice())
-        }
-        // Save the generated values
-        tryLoad = saveExercise(numExo, consigne, exos, resultats, exemple);
-    } */
+            if (exerciseIndex !== -1) {
+                numExo = exerciseIndex; // Use the passed exerciseIndex if it's not -1
+                exercice = exercicesListe[numExo];
+                ({ consigne, exos, resultats, exemple } = exercice())
+            } else {
+                numExo = getRandomInt(0, exercicesListe.length); // Assign a random exercise if -1 is passed
+                exercice = exercicesListe[numExo];
+                ({ consigne, exos, resultats, exemple } = exercice())
+            }
+            // Save the generated values
+            tryLoad = saveExercise(numExo, consigne, exos, resultats, exemple);
+        } */
 
     nomExo = exercise.name;
 
@@ -50,8 +62,8 @@ function displayExercise(exercise) {
     let questionInstructions = exercise.generateQuestionInstructions(questions);
     let questionResults = exercise.generateQuestionResults(questions);
 
-    exercise.displayExercise(exerciseInstructions, questionInstructions);
-    
-    exercise.displayVerifyButton(questionResults);    
+    exercise.displayExercise(exerciseInstructions, questionInstructions, questionResults);
+    console.log(questionResults);
+    exercise.displayVerifyButton(questionResults);
 }
 

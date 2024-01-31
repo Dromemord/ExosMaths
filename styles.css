@@ -28,15 +28,16 @@ body {
     text-align: center;
 }
 
-.exercises {
+.exercise {
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.exercise {
+.question {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
@@ -45,25 +46,29 @@ body {
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
-    flex-direction: column;
-    /* To accommodate two lines per exercise for division */
-    align-items: flex-start;
-    /* Align items to the start of the flex container for division */
 }
 
-.exercise label {
-    margin-right: 10px;
+.question .answer-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows input boxes to wrap onto the next line if they don't fit */
+    gap: 10px; /* Adds space between answer inputs */
+    justify-content: center; /* Centers answer inputs horizontally in the container */
+    align-items: center; /* Centers answer inputs vertically in the container (optional) */
+    width: 100%; /* Full width to utilize the space */
+    margin-top: 10px; /* Space between question and answer container */
 }
 
-input[type='number'] {
+input[type='text'] {
     font-size: 1rem;
     padding: 5px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    width: 120px;
+    min-width: 250; /* Minimum width */
+    width: auto; /* Allow the width to be auto-adjusted */
+    text-align: center; /* Center the text inside the input box */
 }
 
-input[type='number']:focus {
+input[type='text']:focus {
     outline: none;
     border-color: #7abd7a;
     box-shadow: 0 0 0 2px rgba(122, 189, 122, 0.2);
@@ -94,73 +99,33 @@ button:hover {
     text-align: center;
 }
 
-.division-exercise {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+.instruction-part {
+    display: block; /* Makes each part of the consigne appear on a new line */
+    margin-bottom: 5px; /* Adds space between the consigne parts */
 }
 
-.division-exercise .question-container {
-    width: 100%;
-    margin-bottom: 5px;
-    text-align: center;
-    /* Add space between the question and answer container */
-}
-
-.division-exercise .answer-container {
-    width: 100%;
-    display: flex;
-    /* Aligns answer inputs on the same line */
-    gap: 10px;
-    justify-content: center;
-    /* Adds space between answer inputs */
-}
-
-.division-exercise input[type='number'] {
-    padding: 5px;
-    margin-top: 5px;
-    /* Space above the input for separation from text */
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 80px;
-    /* Adjust the width as needed */
-}
-
-.division-exercise input[type='number']:focus {
-    outline: none;
-    border-color: #7abd7a;
-    box-shadow: 0 0 0 2px rgba(122, 189, 122, 0.2);
-}
-
-.consigne-part {
-    display: block;
-    /* Makes each part of the consigne appear on a new line */
-    margin-bottom: 5px;
-    /* Optional: Adds space between the consigne parts */
-}
-
-.regular-exercise {
-    display: flex;
-    /* Aligns items in a row */
-    align-items: center;
-    /* Vertical alignment */
-    justify-content: space-between;
-    /* Spacing between items */
-    padding: 10px;
-}
-
-.regular-exercise .consigne {
-    margin-right: 10px;
-    /* Space between the consigne and the input */
-}
-
-.division-example {
-    margin-top: 20px;
-    padding: 10px;
+.example {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 4px;
     text-align: center;
+}
+
+.example p {
+    margin-top: 5px; /* Reduces space above each paragraph */
+    margin-bottom: 10px; /* Reduces space below each paragraph */
+    /* Adjust these values as needed to suit your design */
+}
+
+/* Optional: If you want the first paragraph to align with the container's top edge */
+.example p:first-child {
+    margin-top: 0;
+}
+
+/* Optional: If you want the last paragraph to align with the container's bottom edge */
+.example p:last-child {
+    margin-bottom: 25px;
 }
 
 #secretButton {
@@ -183,4 +148,11 @@ button:hover {
     /* removes padding */
     z-index: 1000;
     /* ensures the button is above other elements */
+}
+
+/* Responsive input sizes for smaller screens */
+@media (max-width: 600px) {
+    input[type='number'] {
+        max-width: 80px; /* Adjusts input width on smaller screens */
+    }
 }

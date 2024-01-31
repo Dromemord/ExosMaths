@@ -1,27 +1,24 @@
-class MultiplicationTables extends Exercise {
+class MultiplicationsDecimalNumbers extends Exercise {
     constructor(questions = null) {
         // Call the constructor of the parent class
-        super('multiplicationTables', ["De tête, résous les multiplications suivantes :"], 1, '', questions);
+        super('multiplicationsDecimalNumbers', ["Pose les multiplications suivantes :"], 1, '', questions);
     }
 
     // Implement makeQuestions specific to MultiplicationTables
-    makeQuestions(nbExos = 10, tables = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) {
+    makeQuestions(nbExos = 5, nbDigits = 4) {
         let questions = [];
+
+        const nbIntDigits = Math.pow(10, nbDigits - 2);
+        const nbFracDigits = Math.pow(10, Math.floor(nbDigits / 2));
     
-        const usedPairs = new Set();
-        let vEx1, vEx2;
         for (let i = 0; i < nbExos; i++) {
-            let pairKey;
-            do {
-                vEx1 = tables[Math.floor(Math.random() * tables.length)];
-                vEx2 = tables[Math.floor(Math.random() * tables.length)];
-                pairKey = `${vEx1},${vEx2}`;
-            } while (usedPairs.has(pairKey) || usedPairs.has(`${vEx2},${vEx1}`));
-            usedPairs.add(pairKey);
-            questions.push([vEx1, vEx2]);
+            const vEx1 = getRandomInt(10 * nbIntDigits, 100 * nbIntDigits);
+            const vEx2 = getRandomInt(10 * nbIntDigits, 100 * nbIntDigits);
+            
+            questions.push([vEx1/nbFracDigits, vEx2/nbFracDigits]);
         }
-    
-        return questions;
+
+        return questions
     }
 
     // Implement generateQuestionInstructions specific to MultiplicationTables
@@ -60,5 +57,8 @@ class MultiplicationTables extends Exercise {
         return parseFloat(answer) === questionResult;
     }
 }
+
+
+
 
 
