@@ -15,7 +15,7 @@ class MultiplicationsDecimalNumbers extends Exercise {
             const vEx1 = getRandomInt(10 * nbIntDigits, 100 * nbIntDigits);
             const vEx2 = getRandomInt(10 * nbIntDigits, 100 * nbIntDigits);
             
-            questions.push([vEx1/nbFracDigits, vEx2/nbFracDigits]);
+            questions.push([new DecimalNumber([vEx1, nbFracDigits]), new DecimalNumber([vEx2, nbFracDigits])]);
         }
 
         return questions
@@ -37,10 +37,11 @@ class MultiplicationsDecimalNumbers extends Exercise {
         let questionResults = [];
 
         questions.forEach(question => {
-            questionResults.push([question[0] * question[1]]);
+            questionResults.push([question[0].multiply(question[1])]);
         });
         return questionResults;
     }
+
 
     // Implement makeExample specific to MultiplicationTables
     makeExample() {
@@ -53,8 +54,9 @@ class MultiplicationsDecimalNumbers extends Exercise {
     }
 
     // Implement testResultsEquality specific to MultiplicationTables
-    testResultsEquality(answer, questionResult) {
-        return parseFloat(answer) === questionResult;
+    testResultsEquality(userAnswer, correctAnswer) {
+        userAnswer = new DecimalNumber(userAnswer);
+        return userAnswer.equals(correctAnswer);
     }
 }
 

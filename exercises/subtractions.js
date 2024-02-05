@@ -1,4 +1,4 @@
-class Substractions extends Exercise {
+class Subtractions extends Exercise {
     constructor(questions = null) {
         // Call the constructor of the parent class
         super('substractions', ["Effectue les soustractions suivantes :"], 1, '', questions);
@@ -10,12 +10,12 @@ class Substractions extends Exercise {
 
         const nbIntDigits = Math.pow(10, nbDigits - 2);
         const nbFracDigits = Math.pow(10, Math.floor(nbDigits / 2));
-    
+
         for (let i = 0; i < nbExos; i++) {
             const vEx1 = getRandomInt(10 * nbIntDigits, 100 * nbIntDigits);
             const vEx2 = getRandomInt(nbIntDigits, vEx1 - 1);
-            
-            questions.push([vEx1/nbFracDigits, vEx2/nbFracDigits]);
+
+            questions.push([new DecimalNumber([vEx1, nbFracDigits]), new DecimalNumber([vEx2, nbFracDigits])]);
         }
 
         return questions
@@ -36,7 +36,7 @@ class Substractions extends Exercise {
         let questionResults = [];
 
         questions.forEach(question => {
-            questionResults.push([question[0] - question[1]]);
+            questionResults.push([question[0].subtract(question[1])]);
         });
         return questionResults;
     }
@@ -52,8 +52,9 @@ class Substractions extends Exercise {
     }
 
     // Implement testResultsEquality specific to MultiplicationTables
-    testResultsEquality(answer, questionResult) {
-        return parseFloat(answer) === questionResult;
+    testResultsEquality(userAnswer, correctAnswer) {
+        userAnswer = new DecimalNumber(userAnswer);
+        return userAnswer.equals(correctAnswer);
     }
 }
 

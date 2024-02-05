@@ -13,7 +13,6 @@ class Decompositions1 extends Exercise {
             // Probability distribution (e.g., 80% chance of zero, 20% chance of 1-9)
             return Math.random() < 0.4 ? 0 : Math.floor(Math.random() * 9) + 1;
         };
-
         for (let i = 0; i < nbExos; i++) {
             let numberStr = '';
 
@@ -31,11 +30,11 @@ class Decompositions1 extends Exercise {
             }
 
             // Convert the string to a number and ensure it does not have trailing zeros in the decimal part
-            let number = parseFloat(numberStr);
+            let number = new DecimalNumber(numberStr);
 
+            
             questions.push([number]);
         }
-
         return questions;
     }
 
@@ -56,7 +55,8 @@ class Decompositions1 extends Exercise {
         let questionResults = [];
 
         questions.forEach(question => {
-            questionResults.push([decomposeNumber(question[0])]);
+            console.log(question[0]);
+            questionResults.push([question[0].decompose()]);
         });
         return questionResults;
     }
@@ -78,8 +78,17 @@ class Decompositions1 extends Exercise {
             return answer
                 .split('+') // Split by the '+' sign
                 .map(part => part.trim()) // Remove any surrounding whitespace
-                .map(Number) // Convert each part to a number
-                .sort((a, b) => a - b); // Sort the numbers
+                .map(part => new DecimalNumber(part)) // Convert each part to a number
+                .sort((a, b) => {
+                    // Custom sorting for DecimalNumber objects
+                    if (a.equals(b)) {
+                        return 0; // a and b are equal
+                    } else if (a.lessThan(b)) {
+                        return -1; // a is less than b
+                    } else {
+                        return 1; // a is greater than b
+                    }
+                });
         };
 
         // Prepare both the user's answer and the correct answer
@@ -93,8 +102,7 @@ class Decompositions1 extends Exercise {
         // Check each element in the arrays
         for (let i = 0; i < userNumbers.length; i++) {
             // Use a threshold for comparison to handle floating point precision issues
-            const threshold = 1e-10;
-            if (Math.abs(userNumbers[i] - correctNumbers[i]) > threshold) {
+            if (!userNumbers[i].equals(correctNumbers[i])) {
                 return false;
             }
         }

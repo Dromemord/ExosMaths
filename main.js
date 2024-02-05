@@ -2,7 +2,7 @@ const exerciseConstructors = [
     EuclidianDivision,
     MultiplicationTables,
     Multiplications,
-    Substractions,
+    Subtractions,
     MultiplicationsDecimalNumbers,
     Decompositions1
 ];
@@ -30,7 +30,7 @@ function generateAndDisplayExercise() {
 function displayExercise(exercise) {
 
     let exerciseInstructions = exercise.exerciseInstructions;
-    let questions = exercise.makeQuestions();
+    let questions = exercise.questions;
     let questionInstructions = exercise.generateQuestionInstructions(questions);
     let questionResults = exercise.generateQuestionResults(questions);
 
