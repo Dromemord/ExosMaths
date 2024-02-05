@@ -31,6 +31,10 @@ class Exercise {
         throw new Error('testResultsEquality() must be implemented by subclasses');
     }
 
+    setListener(listener) {
+        this.listener = listener;
+    }
+
     displayExercise(exerciseInstructions, questionInstructions, correctAnswers) {
         document.getElementById('instruction').textContent = exerciseInstructions[0];
 
@@ -107,11 +111,6 @@ class Exercise {
         }
     }
 
-    displayVerifyButton(questionResults) {
-        const checkAnswersBtn = document.getElementById('checkAnswersBtn');
-        checkAnswersBtn.addEventListener('click', () => this.checkAnswers(questionResults, checkAnswersBtn));
-    }
-
     getAnswers() {
         let answers = [];
         let answerInputs = [];
@@ -140,8 +139,6 @@ class Exercise {
         const resultDiv = document.getElementById('result');
         if (nbPoints === totalNbPoints) {
             resultDiv.textContent = `Tout est correct ! Voici de nouveaux exercices.`;
-
-            tryLoad = false;
             checkAnswersBtn.removeEventListener('click', this.checkAnswers)
 
             generateAndDisplayExercise(0); // Generate new exercises if all answers are correct
@@ -169,7 +166,9 @@ class Exercise {
         for (let i = 0; i < questionResults.length; i++) {
             for (let j = 0; j < questionResults[i].length; j++) {
                 let answerInput = answerInputs[i][j]; // Directly use the answer input from the structured array
+
                 nbPoints += this.checkAnswer(answers[i][j], questionResults[i][j], answerInput);
+
                 totalNbPoints += 1;
             }
         }

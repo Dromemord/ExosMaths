@@ -1,52 +1,31 @@
-const euclidianDivisionExercise = new EuclidianDivision();
-const multiplicationTablesExercise = new MultiplicationTables();
-const multiplicationsExercise = new Multiplications();
-const substractionsExercise = new Substractions();
-const multiplicationsDecimalNumbersExercise = new MultiplicationsDecimalNumbers();
-const decompositions1 = new Decompositions1();
+const exerciseConstructors = [
+    EuclidianDivision,
+    MultiplicationTables,
+    Multiplications,
+    Substractions,
+    MultiplicationsDecimalNumbers,
+    Decompositions1
+];
 
+let numExo = -1;
+let secretButtonListener = null;
 
-const exerciseList = [euclidianDivisionExercise, multiplicationTablesExercise, multiplicationsExercise, substractionsExercise, multiplicationsDecimalNumbersExercise, decompositions1];
-let numExo, nomExo;
 
 document.addEventListener('DOMContentLoaded', () => {
     generateAndDisplayExercise();
 });
 
-document.getElementById('secretButton').addEventListener('click', () => {
-    generateAndDisplayExercise(0);
-});
 
-function generateAndDisplayExercise(exerciseIndex = -1) {
-    if (exerciseIndex == -1) {
-        numExo = 0;
-    } else {
-        numExo = (numExo + 1) % (exerciseList.length);
-    }
-    let exercise = exerciseList[numExo];
-    /*     let consigne, exos, resultats, exemple;
-    
-        if (tryLoad && isExoSaved()) {
-            ({ numExo, consigne, exos, resultats, exemple } = loadExercise())
-            exercice = exercicesListe[numExo];
-        } else {
-            if (exerciseIndex !== -1) {
-                numExo = exerciseIndex; // Use the passed exerciseIndex if it's not -1
-                exercice = exercicesListe[numExo];
-                ({ consigne, exos, resultats, exemple } = exercice())
-            } else {
-                numExo = getRandomInt(0, exercicesListe.length); // Assign a random exercise if -1 is passed
-                exercice = exercicesListe[numExo];
-                ({ consigne, exos, resultats, exemple } = exercice())
-            }
-            // Save the generated values
-            tryLoad = saveExercise(numExo, consigne, exos, resultats, exemple);
-        } */
+function generateAndDisplayExercise() {
+    numExo = (numExo + 1) % exerciseConstructors.length;
 
-    nomExo = exercise.name;
+    // Create a new instance of the exercise
+    let ExerciseClass = exerciseConstructors[numExo];
+    let exercise = new ExerciseClass();
 
     displayExercise(exercise);
 }
+
 
 function displayExercise(exercise) {
 
@@ -57,6 +36,38 @@ function displayExercise(exercise) {
 
     exercise.displayExercise(exerciseInstructions, questionInstructions, questionResults);
     console.log(questionResults);
-    exercise.displayVerifyButton(questionResults);
+
+    displayVerifyButton(exercise, questionResults);
+    displaySecretButton(exercise);
 }
 
+function displayVerifyButton(exercise, questionResults) {
+    const checkAnswersBtn = document.getElementById('checkAnswersBtn');
+    // Store the reference to the listener
+    const listener = () => exercise.checkAnswers(questionResults, checkAnswersBtn);
+    checkAnswersBtn.addEventListener('click', listener);
+
+    // Attach the listener reference to the exercise object so it can be removed later
+    exercise.setListener(listener);
+}
+
+function displaySecretButton(exercise) {
+    const checkAnswersBtn = document.getElementById('checkAnswersBtn');
+    const secretButton = document.getElementById('secretButton');
+
+    // Remove the previous listener if it exists
+    if (secretButtonListener) {
+        secretButton.removeEventListener('click', secretButtonListener);
+    }
+
+    // Define the new listener
+    secretButtonListener = () => {
+        if (exercise.listener) {
+            checkAnswersBtn.removeEventListener('click', exercise.listener);
+        }
+        generateAndDisplayExercise();
+    };
+
+    // Add the new listener
+    secretButton.addEventListener('click', secretButtonListener);
+}
