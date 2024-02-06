@@ -52,6 +52,9 @@ class Exercise {
         });
 
         this.displayExample();
+
+        MathJax.typesetPromise();
+
     }
 
     displayQuestionInstruction(exerciseElem, questionInstruction) {

@@ -4,14 +4,14 @@ const exerciseConstructors = [
     Multiplications,
     Subtractions,
     MultiplicationsDecimalNumbers,
-    Decompositions1
+    Decompositions1,
+    FractionAdditions
 ];
 
 let numExo = -1;
 let secretButtonListener = null;
 
-
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
     generateAndDisplayExercise();
 });
 

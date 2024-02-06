@@ -1,32 +1,32 @@
-class MultiplicationsDecimalNumbers extends Exercise {
+class FractionAdditions extends Exercise {
     constructor(questions = null) {
         // Call the constructor of the parent class
-        super('MultiplicationsDecimalNumbers', ["Pose les multiplications suivantes :"], 1, '', questions);
+        super('FractionAdditions', ["Additionne les fractions suivantes :"], 1, '', questions);
     }
 
     // Implement makeQuestions specific to MultiplicationTables
-    makeQuestions(nbExos = 5, nbDigits = 4) {
+    makeQuestions(nbExos = 5) {
         let questions = [];
 
-        const nbIntDigits = Math.pow(10, nbDigits - 2);
-        const nbFracDigits = Math.pow(10, Math.floor(nbDigits / 2));
-    
         for (let i = 0; i < nbExos; i++) {
-            const vEx1 = getRandomInt(10 * nbIntDigits, 100 * nbIntDigits);
-            const vEx2 = getRandomInt(0, 100);
+            const num1 = getRandomInt(0,12);
+            const dem1 = getRandomInt(1,12);
             
-            questions.push([new DecimalNumber([vEx1, nbFracDigits]), new DecimalNumber([vEx2, 1])]);
+            const num2 = getRandomInt(0,12);
+            const dem2 = getRandomInt(1,12);
+            
+
+            questions.push([new Rational(num1, dem1), new Rational(num2, dem2)]);
         }
 
         return questions
     }
-
     // Implement generateQuestionInstructions specific to MultiplicationTables
     generateQuestionInstructions(questions) {
         let questionInstructions = [];
 
         questions.forEach(question => {
-            questionInstructions.push([`${question[0]} x ${question[1]} = `]);
+            questionInstructions.push(['\\[' + question[0].toString() + ' + ' + question[1].toString() + ' = \\]']);
         });
 
         return questionInstructions;
@@ -37,11 +37,10 @@ class MultiplicationsDecimalNumbers extends Exercise {
         let questionResults = [];
 
         questions.forEach(question => {
-            questionResults.push([question[0].multiply(question[1])]);
+            questionResults.push([question[0].add(question[1])]);
         });
         return questionResults;
     }
-
 
     // Implement makeExample specific to MultiplicationTables
     makeExample() {
@@ -55,10 +54,11 @@ class MultiplicationsDecimalNumbers extends Exercise {
 
     // Implement testResultsEquality specific to MultiplicationTables
     testResultsEquality(userAnswer, correctAnswer) {
-        userAnswer = new DecimalNumber(userAnswer);
+        userAnswer = new Rational(userAnswer);
         return userAnswer.equals(correctAnswer);
     }
 }
+
 
 
 

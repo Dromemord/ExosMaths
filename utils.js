@@ -16,25 +16,37 @@ function getInputWidth(correctAnswers) {
     return Math.max(calculatedWidth, 120);
 }
 
+function gcd(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+
+    return b === 0 ? a : gcd(b, a % b);
+}
+
 class Rational {
     constructor(numerator, denominator = 1) {
+        if (typeof numerator === 'string' && numerator.includes('/')) {
+            const parts = numerator.split('/');
+            numerator = parseInt(parts[0], 10);
+            denominator = parseInt(parts[1], 10);
+            if (parts.length !== 2 || isNaN(numerator) || isNaN(denominator) || denominator === 0) {
+                throw new Error("Invalid input format. Expected 'numerator/denominator'.");
+            }
+        }
+
         if (denominator === 0) {
             throw new Error("Denominator cannot be zero.");
         }
 
-        const gcd = Rational.gcd(numerator, denominator);
-        this.numerator = numerator / gcd;
-        this.denominator = denominator / gcd;
+        const gcdTemp = gcd(numerator, denominator);
+        this.numerator = numerator / gcdTemp;
+        this.denominator = denominator / gcdTemp;
 
         // Ensure denominator is positive
         if (this.denominator < 0) {
             this.numerator *= -1;
             this.denominator *= -1;
         }
-    }
-
-    static gcd(a, b) {
-        return b === 0 ? a : Rational.gcd(b, a % b);
     }
 
     add(other) {
@@ -69,7 +81,11 @@ class Rational {
     }
 
     toString() {
-        return `${this.numerator}/${this.denominator}`;
+        return `\\frac{${this.numerator}}{${this.denominator}}`;
+    }
+
+    equals(other){
+        return this.numerator == other.numerator && this.denominator == other.denominator;
     }
 }
 

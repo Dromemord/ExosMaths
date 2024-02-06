@@ -63,7 +63,12 @@ class Decompositions1 extends Exercise {
 
     // Implement makeExample specific to MultiplicationTables
     makeExample() {
-        return [];
+        let question = [this.makeQuestions(1)][0];
+        let questionInstruction = this.generateQuestionInstructions(question)[0];
+
+        let questionResult = this.generateQuestionResults(question)[0];
+
+        return questionInstruction.concat(questionResult);
     }
 
     // Implement formatExample specific to MultiplicationTables
